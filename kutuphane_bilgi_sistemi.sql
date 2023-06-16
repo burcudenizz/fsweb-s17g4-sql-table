@@ -85,3 +85,91 @@ ALTER TABLE IF EXISTS public.kitap
     NOT VALID;
 
 END;
+
+-- CEVAPLAR --
+
+--1
+
+ALTER TABLE IF EXISTS public.ogrenci
+    ADD COLUMN sehir character varying NOT NULL;
+ 
+--2
+
+--zaten veri türünü date olarak ayarlamıştım.
+
+--3
+
+ALTER TABLE IF EXISTS public.ogrenci
+    ADD COLUMN dogum_yeri character varying DEFAULT Türkiye;
+
+--4
+
+ALTER TABLE IF EXISTS public.ogrenci DROP COLUMN IF EXISTS puan
+
+--5
+
+CREATE TABLE public.kiz_ogrenciler AS
+SELECT * FROM ogrenci WHERE cinsiyet = 'K';
+
+--6
+
+DROP TABLE IF EXISTS public.kiz_ogrenciler;
+
+--7
+
+CREATE TABLE IF NOT EXISTS public.kiz_yurdu (
+    ad character varying(50) NOT NULL,
+);
+
+INSERT INTO public.kiz_yurdu (ad)
+VALUES ('Workintech Öğrenci');
+
+
+CREATE TABLE IF NOT EXISTS public.kiz_yurdunda_kalanlar AS
+SELECT * FROM ogrenci WHERE cinsiyet = 'K';
+
+--8
+
+ALTER TABLE public.kiz_ogrenciler 
+    RENAME TO kogrenciler;
+
+--9
+
+ALTER TABLE IF EXISTS public.yazar
+    RENAME ad TO name;
+
+--10
+
+ALTER TABLE IF EXISTS public.yazar
+    ADD COLUMN ulke character varying DEFAULT Türkiye;
+
+ALTER TABLE IF EXISTS public.yazar
+    ADD COLUMN universite character varying DEFAULT İYTE;
+
+
+--11
+
+-- 1-1 İlişki Örneği:
+
+-- Örnek: "kullanici" ve "profil" tabloları arasında 1-1 ilişki olabilir. Her bir kullanıcıya sadece bir profil atanır.
+-- "kullanici" tablosu: kullanici_id (PK), kullanici_adı, şifre, ...
+-- "profil" tablosu: profil_id (PK), kullanici_id (FK), ad, soyad, email, ...
+-- 1-n İlişki Örneği:
+
+-- Örnek: "departman" ve "calisan" tabloları arasında 1-n ilişki olabilir. Bir departmanda birden fazla çalışan bulunabilir.
+-- "departman" tablosu: departman_id (PK), departman_adı, ...
+-- "calisan" tablosu: calisan_id (PK), departman_id (FK), ad, soyad, maas, ...
+-- n-n İlişki Örneği:
+
+-- Örnek: "kitap" ve "yazar" tabloları arasında n-n ilişki olabilir. Bir kitap birden fazla yazar içerebilir ve bir yazar birden fazla kitap yazabilir.
+
+-- "kitap" tablosu: kitap_id (PK), kitap_adı, ...
+-- "yazar" tablosu: yazar_id (PK), yazar_adı, ...
+-- "kitap_yazar" tablosu: kitap_id (FK), yazar_id (FK)
+-- Örnek: "kategori" ve "urun" tabloları arasında n-n ilişki olabilir. Bir kategori birden fazla ürün içerebilir ve bir ürün birden fazla kategoriye ait olabilir.
+
+-- "kategori" tablosu: kategori_id (PK), kategori_adı, ...
+-- "urun" tablosu: urun_id (PK), urun_adı, ...
+-- "kategori_urun" tablosu: kategori_id (FK), urun_id (FK)
+
+
